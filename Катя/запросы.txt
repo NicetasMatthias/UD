@@ -1,1 +1,56 @@
-SELECT count(*) FROM students WHERE edu_form="‘ќ–ћј ќЅ”„≈Ќ»я"  //возвращает количество студентов на этой форме обучени€
+SELECT count(*) FROM students WHERE edu_form="?"  
+//возвращает количество студентов на этой форме обучения
+
+SELECT 
+hours as "Кол-во часов в семестре", 
+rep_form as "Форма отчетности"  
+FROM subjects
+WHERE subject="?"
+//возвращает количество часов и формы отчетности по этому предмету
+
+UPDATE students SET
+full_name = "?",
+year = ?,
+edu_form = "?",
+group_name = "?"
+WHERE id=ID_СТУДЕНТА
+//обновляет данные для студента с указанным id
+
+INSERT INTO students(full_name,year,edu_form,group_name)
+VALUES ("?",?,"?","?")
+//добавляет в базу студента с указанными данными
+
+UPDATE subjects SET
+subject = "?",
+profession = "?",
+semester = ?,
+hours = ?,
+rep_form = "?"
+WHERE id=ID_ДИСЦИПЛИНЫ
+//обновляет данные для дисциплины с указанным id
+
+INSERT INTO subjects(subject,profession,semester,hours,rep_form)
+VALUES("?","?",?,?,"?")
+//добавляет в базу дисциплину с указанными данными
+
+UPDATE log SET
+semester = ?,
+student_id = ?,
+subject_id = ?,
+mark = ?
+WHERE id=ID_ЗАПИСИ_В_ЖУРНАЛЕ
+//обновляет запись в журнале с указанным id
+
+INSERT INTO log(semester,student_id,subject_id,mark)
+VALUES(?,?,?,?)
+//добавляет в журнал запись с указанными данными
+
+SELECT 
+subjects.subject as "дисциплина", 
+log.semester as "семестр",
+subjects.rep_form as "форма отчетности",
+log.mark as "оценка"
+FROM log
+LEFT JOIN subjects on log.subject_id=subjects.id
+WHERE log.student_id=ID_СТУДЕНТА
+//справка об успеваемости студента с соответствующим id

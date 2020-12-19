@@ -1,0 +1,53 @@
+select drivers.name FROM drivers
+LEFT JOIN buses on drivers.bus_id=buses.id
+LEFT JOIN routes on buses.rout_id=routes.id
+WHERE routes.number=НОМЕР
+--возвращает список водителей на выбраном маршруте
+
+select buses.number FROM buses
+LEFT JOIN routes on buses.rout_id=routes.id
+WHERE routes.number=123
+--возвращает номера автобусов на выбраном маршруте
+
+SELECT routes.number, t_start, t_stop FROM routes
+WHERE routes.number in (НОМЕР,НОМЕР,НОМЕР)
+--возвращает время начала и конца движения на конкретных маршрутах (убрать WHERE, если нужен весь список)
+
+SELECT routes.number, distance FROM routes
+WHERE routes.number in (НОМЕР,НОМЕР,НОМЕР)
+--возвращает дистанцию на конкретных маршрутах (убрать WHERE, если нужен весь список)
+
+SELECT buses.number FROM buses
+LEFT JOIN drivers on drivers.bus_id=buses.id
+WHERE drivers.name="ИМЯ ВОДИТЕЛЯ"
+--возвращает номер автобуса на котором работает водитель
+
+INSERT INTO drivers (name,class,experience,salary,bus_id)
+VALUES (?,?,?,?,?)
+
+DELETE FROM buses WHERE buses.number=?
+--Списание автобуса
+
+UPDATE routes
+SET distance=9999 WHERE routes.number=123
+--изменяет длинну маршрута
+
+SELECT count(*) as "Количество автобусов" FROM buses
+--возвращает количество автобусов
+
+SELECT DISTINCT name as "Типы автобусов" FROM types
+--возвращает список типов
+
+SELECT 
+number as "Номер",
+t_start as "Время начала движения",
+interval as "Интервал"
+FROM routes
+--справка по маршрутам
+
+SELECT 
+name as "ФИО",
+class as "Класс водителя"
+FROM drivers
+--справка по водителям
+
