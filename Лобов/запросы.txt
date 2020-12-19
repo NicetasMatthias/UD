@@ -1,0 +1,65 @@
+SELECT DISTINCT strana FROM toma
+WHERE id_razdela = ?
+--возвращает список стран, чьи марки есть 
+
+SELECT id FROM toma
+WHERE (strana,tema) IN (SELECT strana,tema FROM seriya WHERE id = ?)
+--возвращает в каком томе коллекции находится марка указанной серии
+
+SELECT 
+polojenie.id_page as "Страница",
+polojenie.polojenie_na_page as "Положение на странице"
+FROM polojenie
+LEFT JOIN marka ON marka.id_polojeniya=polojenie.id
+WHERE marka.id_serii = ?
+--в каких местах коллекции (страница и положение на ней) находятся марки указанной темы
+
+SELECT DISTINCT seriya.tema FROM seriya
+LEFT JOIN marka ON marka.id_serii=seriya.id
+WHERE marka.size = ?
+--возвращает темы серий, включающих марки указанного размера
+
+SELECT seriya.strana FROM seriya
+LEFT JOIN marka ON marka.id_serii=seriya.id
+LEFT JOIN polojenie ON polojenie.id = marka.id_polojeniya
+WHERE (polojenie.id_page,polojenie.polojenie_na_page)=(ID_СТРАНИЦЫ,ID_ПОЛОЖЕНИЯ_НА_СТРАНИЦЕ)
+--возвращает марка какой страны находится в данном месте
+
+INSERT INTO 
+marka(id_polojeniya,id_serii,tema_marki,size,color,ptice)
+VALUES(?,?,НОВАЯ_ТЕМА,?,?,?)
+--добавление марки новой темы
+
+DELETE FROM marka
+WHERE tema_marki=?
+--удаление всех марок указанной темы
+
+UPDATE marka
+SET id_polojeniya = ID_ПОЛОЖЕНИЯ
+WHERE id = ID_МАРКИ
+--изменение места расположения марки (ID_МАРКИ) на (ID_ПОЛОЖЕНИЯ)
+
+SELECT DISTINCT strana FROM seriya
+WHERE id in 
+(SELECT id_serii FROM marka
+WHERE tema_marki = "?")
+--справка о странах, чьи марки соответствуют данной теме
+
+SELECT 
+id_razdela as "Номер раздела", 
+tema as "Тема", 
+strana as "Страна" 
+FROM toma
+--справка о темах и странах по разделам
+
+SELECT 
+seriya.tema as "Тема", 
+seriya.strana as "Страна", 
+count(*) as "Количество марок" 
+FROM marka
+LEFT JOIN seriya ON marka.id_serii=seriya.id
+GROUP BY  seriya.tema, seriya.strana
+--справка о количестве марок каждой страны для каждой темы
+
+SELECT count(*) as "Количество страниц" FROM pages
+--справка о количестве страниц

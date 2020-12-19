@@ -1,0 +1,52 @@
+SELECT sum(work_piece.material_consumpt) FROM work_piece
+LEFT JOIN detail___work_piece ON work_piece.id=detail___work_piece.id_workpiece
+WHERE detail___work_piece IN (?,?,?,?,?)
+--какое количество материала потребуется для изготовления заменяемых деталей определенного обозначения, входящих в данный узел и имеющих опре-деленный тип заготовки
+
+SELECT node.designation from node_detail
+LEFT JOIN node on node.id=node_detail.id_node
+WHERE 
+(id_detail=?)
+AND
+number=(SELECT max(number) FROM node_detail WHERE id_detail = ?)
+--какой узел имеет наибольшее количество деталей определен-ного типа
+
+SELECT id_workpiece, min(work_piece.material_consumpt)
+FROM detail___work_piece
+LEFT JOIN work_piece on detail___work_piece.id_workpiece = work_piece.id
+WHERE detail___work_piece.id_detail=?
+--какой тип заготовки обеспечивает минимальный расход материала для де-талей заданного обозначения;
+
+SELECT sum(t_replacement) FROM product_detail_node
+WHERE id_product = ?
+--сколько времени потребуется на ремонт изделия
+
+INSERT INTO node(designation)
+VALUES ("?")
+--добавление информации о новом узле
+
+DELETE FROM product_detail_node
+WHERE id_product = ?
+удаление информации о ремонтируемом изделии
+
+UPDATE detail___work_piece 
+SET id_workpiece = ID_НОВОЙ_ЗАГОТОВКИ
+WHERE id = ID_ЗАМЕНЯЕМОЙ_ПАРЫ
+--изменение типа заготовки детали
+
+SELECT number FROM node_detail
+WHERE 
+id_node = ID_УЗЛА
+AND
+id_detail = ID_ДЕТАЛИ
+--справка о количестве ука-занной детали в узле
+
+SELECT product.name, sum(product_detail_node.t_replacement) 
+FROM product_detail_node
+LEFT JOIN product ON product_detail_node.id_detail=product.id
+GROUP BY product_detail_node.id_product
+--название и количество ре-монтируемых изделий, время ремонта каждого изделия
+
+SELECT detail.designation FROM product_detail_node
+LEFT JOIN detail ON detail.id=product_detail_node.id_detail
+--список замененных деталей
