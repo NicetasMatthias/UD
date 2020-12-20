@@ -1,0 +1,85 @@
+SELECT subject FROM Schedule
+WHERE
+id_class = ? 
+AND
+day = ?
+AND
+number_lesson = ?
+--какой предмет будет в заданном классе, в заданный день на заданном уроке
+
+SELECT Master.name FROM Schedule
+LEFT JOIN Master ON Master.id = Schedule.id_master
+WHERE Schedule.id_class = ?
+--кто из учителей преподает в заданном классе
+
+SELECT room FROM Schedule
+WHERE
+number_lesson = ? 
+AND
+day = ?
+AND
+id_class = ?
+--в каком кабинете будет 5-й урок в среду у некоторого класса
+
+SELECT id_class FROM Schedule
+WHERE
+id_master = ? 
+AND
+subject = ?
+--в каких классах преподает учитель заданный предмет
+
+SELECT subject FROM Schedule
+WHERE 
+day = ?
+AND
+id_class = ?
+ORDER BY number_lesson ASC
+--расписание на заданный день недели для класса
+
+INSERT INTO Master(name, rooms_locked)
+VALUES("",?)
+--вносить информацию о новом учителе
+
+DELETE FROM Student
+WHERE id = ?
+--удалять запись об ученике
+
+UPDATE Marks
+SET mark = ?
+WHERE
+student_id = ?
+AND
+subject_id = ?
+--изменить оценку ученику
+
+SELECT Class.name_class as "Название класса", count(Student.id) as "Количество учеников" FROM Student
+LEFT JOIN Class ON Class.id=Student.id_class
+WHERE Student.id_class = ?
+--количестве учеников в данном классе
+
+SELECT 
+name as "Предмет", 
+count(id_master) as "Количество преподавателей" 
+FROM Subjects
+GROUP BY name
+--количество учителей по предметам
+
+SELECT count(*) as "Количество кабинетов" FROM Rooms
+--количество кабинетов
+
+SELECT Class.name_class as "Название класса", count(Student.id) as "Количество учеников" FROM Student
+LEFT JOIN Class ON Class.id=Student.id_class
+GROUP BY Student.id_class
+--количестве учеников в каждом классе
+
+SELECT m_mark as "Минимальная оценка",count(*) as "Количество" 
+FROM (SELECT student_id as "id", min(mark) as "m_mark" FROM Marks GROUP BY student_id)
+GROUP BY m_mark
+--число двоечников, троечников, хорошистов и отличников
+
+
+
+
+
+
+
