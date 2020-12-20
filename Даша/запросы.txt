@@ -1,0 +1,49 @@
+SELECT DISTINCT filmi.nazvanie from seansi
+LEFT JOIN filmi on filmi.id=seansi.id_filma
+LEFT JOIN kinoteatri on kinoteatri.id=seansi.id_kinoteatra
+WHERE kinoteatri.nazvanie = ?
+--репертуар кинотеатра (по названию кинотеатра)
+
+SELECT raion FROM kinoteatri
+WHERE nazvanie = ?
+--район кинотеатра (по названию кинотеатра)
+
+SELECT kinoteatri.nazvanie, seansi.mesta FROM seansi
+LEFT JOIN kinoteatri ON seansi.id_kinoteatra=kinoteatri.id
+WHERE seansi.id = ?
+--число мест (свободных) и название кинотеатра на данный сеанс 
+
+SELECT cena FROM seansi
+WHERE id = ?
+--цена билетов на данный сеанс
+
+SELECT zhanr,proizvodstvo,rezhiser FROM filmi
+WHERE nazvanie = ?
+--жанр, производство и режиссер данного фильма (по названию)
+
+SELECT kategorii.vmestimost FROM kinoteatri
+LEFT JOIN kategorii on kategorii.id=kinoteatri.id_kategorii
+WHERE kinoteatri.nazvanie = ?
+--вместимость данного кинотеатра(по названию кинотеатра)
+
+INSERT INTO kinoteatri(nazvanie,raion,id_kategorii)
+VALUES("?","?",?)
+--открытие нового кинотеатра
+
+DELETE FROM seansi
+WHERE id_filma = ?
+--снятие фильма с проката;
+
+UPDATE seansi
+SET (id_filma,cena,mesta)=(?,?,?)
+WHERE id = ?
+--изменение репертуара кинотеатра.
+
+SELECT DISTINCT
+filmi.nazvanie as "Фильм",
+kinoteatri.nazvanie as "Кинотеатр",
+seansi.cena as "Цена билета"
+FROM seansi
+LEFT JOIN filmi ON filmi.id = seansi.id_filma
+LEFT JOIN kinoteatri ON kinoteatri.id = seansi.id_kinoteatra
+--названия фильмов, в каких кинотеатрах они демонстрировались, цена билета в каждом кинотеатре
